@@ -7,10 +7,11 @@ package br.edu.fasa.MeuProjeto.Dao;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author paulocesar
- */
+
+// interface são um espécie de contrato
+// que contém métodos apenas com assinatura
+// para serem implementados pelas classes que a utilizarem
+// T representa a api genérics do java
 public interface DaoInterface <T> {
     
     public boolean inserir(T obj);

@@ -12,55 +12,108 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- *
- * @author paulocesar
- */
+/*
+Classe utilizada para manipulação de dados dos objetos
+Cao. Esta classe implementa DaoInterface que possui a 
+assinatura dos métodos a serem implementados: inserir,
+listaTodos, listaPorNome,atualizar, apagar.
+
+Obs: Estudar interfaces e genérics
+*/
 public class CaoDao implements DaoInterface<Cao> {
     
+    
+    /* Método inserir subscrito (@Override)
+    recebe como parâmetro um objeto Cao e retorna 
+    um valor boolean (true ou false)    
+    */
     @Override
     public boolean inserir(Cao obj) {
 
+        /*
+        Início do bloco de código que pode apresentar
+        uma possível exceção.
+        */
         try {
+            // Intanciando uma um objeto da Classe Connection
+            // através do método getConexão presente na classe ConectaBanco
             Connection con = ConectaBanco.getConexao();
+            
+            // Variável para receber uma query para execução
             PreparedStatement pstmt;
             pstmt = con.prepareStatement("insert into cachorros "
                     + "(nome, raca, cor, peso, idade, latido) "
                     + "values(?, ?, ?, ?, ?, ?);");
-
+            
+            // Atribuindo valores às interrogações presentes 
+            // na query
             pstmt.setString(1, obj.getNome());
             pstmt.setString(2, obj.getRaca());
             pstmt.setString(3, obj.getCor());
             pstmt.setFloat(4, obj.getPeso());
             pstmt.setInt(5, obj.getIdade());
             pstmt.setString(6, obj.getLatido());
-
+            
+            // chamada ao método para execução da query
+            // este método retorna 1 caso a query seja executada com sucesso
+            // e dois caso aconteça um erro
             pstmt.executeUpdate();
             
-
+          // captura de exceções do tipo SQLException caso ocorram 
         } catch (SQLException sqle) {  
             System.out.println(sqle.getMessage());
-            return false;
+            return false;           
+            
         }
+        
+        // Captura de qualquer exceção que ocorra durante a execução
+        // do bloco de código
+        catch(Exception ex){
+            
+            // Imprime toda pilha de chamadas de métodos
+            // até o ponto onde ocorreu a exceção
+            ex.printStackTrace();
+            return false;
+        }         
         
         return true;
     }
 
+    // método para listar todos os dados presentes na tabela cachorros
+    // Retorna um Array de objetos do tipo Cao
     @Override
     public ArrayList<Cao> listaTodos() {
+        
+        // Instanciando um ArrayList de objetos Cao
         ArrayList<Cao> caes = new ArrayList<Cao>();
 
         try {
             Connection con = ConectaBanco.getConexao();
             PreparedStatement pstmt;
-
+            
+            // select preparada para execução
             pstmt = con.prepareStatement("select *from cachorros");
             
+            // chamada ao método executeQuery
+            // este método executa a query presente na variável pstmt
+            // retornando um Resultset que contém todos os dados solicitados
+            // na query.
             ResultSet rs = pstmt.executeQuery();              
             
-                                               
+            // loop para iterar sobre o ResultSet que contém os
+            // dados da query. O método next() posiciona o ponteiro
+            // no primeiro resultado encontrado e a cada iteração do loop
+            // ele aponta para o próximo resultado até não existirem mais 
+            // resultados retornando false ao final permitindo sair do loop
             while(rs.next()){
+                
+                // instanciando um objeto do tipo Cao
                 Cao c = new Cao();
+                
+                // atribuindo os valores recebidos no ResultSet
+                // ao objeto Cao. Os métodos get do objeto rs recuperam
+                // os valores através das chaves, que na verdade são
+                // os nomes das referidas colunas no banco de dados.                
                 c.setCod(rs.getInt("id"));
                 c.setNome(rs.getString("nome"));
                 c.setRaca(rs.getString("raca"));
@@ -69,6 +122,8 @@ public class CaoDao implements DaoInterface<Cao> {
                 c.setIdade(rs.getInt("idade"));
                 c.setLatido(rs.getString("latido"));
                 
+                // adicionando cada objeto recebido ao ArrayList
+                // através do método add()
                 caes.add(c);                               
             }      
              
@@ -80,7 +135,8 @@ public class CaoDao implements DaoInterface<Cao> {
 
         return caes;
     }
-
+    
+    
     @Override
     public int atualizar(Cao obj) {
         int aux = 0;
@@ -88,7 +144,11 @@ public class CaoDao implements DaoInterface<Cao> {
             Connection con = ConectaBanco.getConexao();
             PreparedStatement pstmt;
             
-            String sql = "update cachorros set nome = ?, raca = ?, cor= ?, peso = ?, idade = ?, latido = ? where id = ?;";
+            // string contendo a sql para realizar update na tabela cachorros
+            String sql = "update cachorros set nome = ?, raca = ?, cor= ?, "
+                    + "peso = ?, idade = ?, latido = ? where id = ?;";
+            
+            
             pstmt = con.prepareStatement(sql);
             
             pstmt.setString(1, obj.getNome());
@@ -99,6 +159,8 @@ public class CaoDao implements DaoInterface<Cao> {
             pstmt.setString(6, obj.getLatido());
             pstmt.setInt(7, obj.getCod());
             
+            // variável aux recebe o retorno da execução do método
+            // executeUpdate()
             aux = pstmt.executeUpdate();         
 
         } catch (SQLException sqle) {

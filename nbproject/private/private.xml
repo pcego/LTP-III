@@ -5,10 +5,14 @@
         <group>
             <file>file:/home/pcego/VMWin/MeuProjeto_5/src/br/edu/fasa/MeuProjeto_5/Model/Cao.java</file>
             <file>file:/home/pcego/VMWin/MeuProjeto_5/src/br/edu/fasa/MeuProjeto/Dao/ConectaBanco.java</file>
+            <file>file:/home/pcego/VMWin/MeuProjeto_5/src/br/edu/fasa/MeuProjeto_5/Model/Cliente.java</file>
             <file>file:/home/pcego/VMWin/MeuProjeto_5/src/br/edu/fasa/MeuProjeto_5/Gui/TelaConsulta.java</file>
             <file>file:/home/pcego/VMWin/MeuProjeto_5/src/br/edu/fasa/MeuProjeto/Dao/DaoInterface.java</file>
             <file>file:/home/pcego/VMWin/MeuProjeto_5/src/br/edu/fasa/MeuProjeto/Dao/CaoDao.java</file>
             <file>file:/home/pcego/VMWin/MeuProjeto_5/src/br/edu/fasa/MeuProjeto_5/Gui/TelaPrincipal.java</file>
+            <file>file:/home/pcego/VMWin/MeuProjeto_5/src/br/edu/fasa/MeuProjeto_5/Gui/TelaCadCachorro.java</file>
+            <file>file:/home/pcego/VMWin/MeuProjeto_5/src/br/edu/fasa/MeuProjeto_5/Gui/TelaCadCliente.java</file>
+            <file>file:/home/pcego/VMWin/MeuProjeto_5/src/br/edu/fasa/MeuProjeto/Dao/ClienteDao.java</file>
             <file>file:/home/pcego/VMWin/MeuProjeto_5/src/br/edu/fasa/MeuProjeto/Util/Util.java</file>
         </group>
     </open-files>

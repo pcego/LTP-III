@@ -7,28 +7,29 @@ package br.edu.fasa.MeuProjeto.Util;
 
 import br.edu.fasa.MeuProjeto.Dao.ConectaBanco;
 import br.edu.fasa.MeuProjeto_5.Gui.TelaConsulta;
-import br.edu.fasa.MeuProjeto_5.Gui.TelaPrincipal;
+import br.edu.fasa.MeuProjeto_5.Gui.TelaCadCachorro;
+import br.edu.fasa.MeuProjeto_5.Gui.TelaCadCliente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-/**
- *
- * @author paulocesar
- */
+// Classe com métodos para instaciar janelas
+// e capturar ultimo código inserido 
 public class Util {
     
-    public static TelaPrincipal tp = null;
+    public static TelaCadCachorro tp = null;
     public static TelaConsulta tc = null;
+    public static TelaCadCliente tcCliente = null;
     
-    public static int getUltimoCodigo() {
+    public static int getUltimoCodigo(String nomeTabela) {
         
         int ultimoCodigo = 0;
 
         try {
             Connection con = ConectaBanco.getConexao();
             PreparedStatement pstmt = null;
-            pstmt = con.prepareStatement("select MAX(id) from cachorros;");
+            // select para acessar ultimo id inserido no bd postgres
+            pstmt = con.prepareStatement("select MAX(id) from " + nomeTabela +";");            
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -43,18 +44,29 @@ public class Util {
         return ultimoCodigo;
     }   
     
-    public static TelaPrincipal getPrincipal(){        
+    // método para instanciar objetos do tipo TelaCadCachorro
+    // caso já exista um objeto em memória o mesmo é retornado
+    // caso contrário o mesmo é instanciado e retornado
+    public static TelaCadCachorro getCadCachorro(){        
         
         if(tp == null){
-           tp = new TelaPrincipal();
+           tp = new TelaCadCachorro();
         }
         return tp;
     }
     
+    // idem ao anterior
     public static TelaConsulta getConsulta(){
         if(tc == null){
             tc = new TelaConsulta();
         }
         return tc;
+    }
+    
+    public static TelaCadCliente getCadCliente(){
+        if(tcCliente == null){
+            tcCliente = new TelaCadCliente();
+        }
+        return tcCliente;
     }
 }

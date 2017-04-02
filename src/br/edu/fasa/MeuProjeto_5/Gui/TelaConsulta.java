@@ -1,13 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
- /*
- * JFConsulta.java
- *
- * Created on 19/11/2011, 20:41:20
- */
 package br.edu.fasa.MeuProjeto_5.Gui;
 
 import br.edu.fasa.MeuProjeto.Dao.CaoDao;
@@ -17,18 +7,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Deda
- */
+
 public class TelaConsulta extends javax.swing.JFrame {
 
     private Cao cachorro;
     private CaoDao caoDao;
 
-    /**
-     * Creates new form JFConsulta
-     */
+   
     public TelaConsulta() {
         initComponents();
     }
@@ -69,7 +54,7 @@ public class TelaConsulta extends javax.swing.JFrame {
 
         jTForma.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
-        jBProcessar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/fasa/MeuProjeto_5/Gui/ConsVagas.png"))); // NOI18N
+        jBProcessar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/fasa/MeuProjeto/Icones/ConsVagas.png"))); // NOI18N
         jBProcessar.setText("Processar");
         jBProcessar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,12 +116,12 @@ public class TelaConsulta extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jTForma, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCForma, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+                    .addComponent(jCForma, javax.swing.GroupLayout.Alignment.LEADING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jBProcessar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -155,30 +140,54 @@ public class TelaConsulta extends javax.swing.JFrame {
 
 private void jBProcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBProcessarActionPerformed
     
-    
+    // vetor de strings contendo as strings que seram usadas como nomes das colunas
+    // da tabela usada para exibir os resultados da consulta
     String[] titulos = {"Código", "Nome", "Raça", "Cor", "Peso", "Idade", "Latido"};
+    
+    // Instanciando uma tabela default do Java
     DefaultTableModel dtm = new DefaultTableModel();
+    
+    // chamada ao método setColumnIdentifiers que recebe como parâmetro
+    // o vetor de strings titulos e os atribui à tabela
     dtm.setColumnIdentifiers(titulos);
 
+    // instanciando um objeto Cao e atribuindo a variável cachorro
     cachorro = new Cao();
+    
+    // instanciando um objeto CaoDao
     caoDao = new CaoDao();
+    
+    // ArrayList que vai receber os resultado da consulta
     ArrayList<Cao> resultado = new ArrayList<Cao>();
     
+    // condição que verifica qual das opções de consulta foi selecionada
+    // por nome ou todos    
     if (jCForma.getSelectedIndex() == 0) {
         resultado.clear();
         resultado = caoDao.listaTodos();
-    } else if (jCForma.getSelectedIndex() == 1) {
+    } 
+    
+    else if (jCForma.getSelectedIndex() == 1) {
         resultado.clear();
         resultado = caoDao.listaPorNome(jTForma.getText());
     }
 
+    // instanciando um objeto Iterator para 
+    // recuperar os objetos contidos no Array resultados
     Iterator<Cao> i = resultado.listIterator();
 
+    // o método hasNext()
+    // itera sobre o array de resultados    
     while (i.hasNext()) {
 
+        // objeto cachorro recebe o resultado da iteração
         cachorro = i.next();
+        // o método addRow adiciona cada objeto encontrado
+        // a uma linha na tabela que exibe os resultados
         dtm.addRow(new Object[]{cachorro.getCod(), cachorro.getNome(), cachorro.getRaca(), cachorro.getCor(),
             cachorro.getPeso(), cachorro.getIdade(), cachorro.getLatido()});
+        
+        // exibindo os dados na tabela
         jTabela.setModel(dtm); 
     }
     
@@ -192,9 +201,16 @@ private void jBProcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         // TODO add your handling code here:
     }//GEN-LAST:event_jCFormaActionPerformed
 
+    // método tratamento de eventos de tecla
     private void jTabelaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTabelaKeyPressed
+        
+        // condição que verifica se a tecla enter foi pressionada
         if(evt.getKeyCode()== 10){
+            
+            // recupera a linha selecionada na tabela
             int linha = jTabela.getSelectedRow();
+            
+            // atribuindo dados recuperados na tabela ao objeto cachorro
             cachorro.setCod((int) jTabela.getValueAt(linha, 0));
             cachorro.setNome((String) jTabela.getValueAt(linha, 1));
             cachorro.setRaca((String) jTabela.getValueAt(linha, 2));
@@ -202,8 +218,11 @@ private void jBProcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             cachorro.setPeso((float) jTabela.getValueAt(linha, 4));
             cachorro.setIdade((int) jTabela.getValueAt(linha, 5));
             cachorro.setLatido((String) jTabela.getValueAt(linha, 6));
-
-            Util.getPrincipal().preencheTela(cachorro);
+            
+            // chamada ao método que preenche a tela principal
+            Util.getCadCachorro().preencheTela(cachorro);
+            
+            // ocultando a janela de consulta
             Util.getConsulta().setVisible(false);
         }
     }//GEN-LAST:event_jTabelaKeyPressed
